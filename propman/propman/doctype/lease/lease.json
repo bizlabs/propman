@@ -1,0 +1,270 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "lease-.######",
+ "creation": "2024-02-12 17:12:24.705439",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "customer",
+  "building",
+  "unit",
+  "status",
+  "lease_history",
+  "action_que",
+  "current_lease_parameters_column",
+  "period",
+  "increment",
+  "rent",
+  "deposit",
+  "lease_start",
+  "lease_end",
+  "next_date",
+  "section_break_idmy",
+  "inv_schedule",
+  "latefee_policy",
+  "inv_trigger",
+  "late_fee_schedule",
+  "renewal_tab",
+  "renewal_details_section",
+  "renewal_draft",
+  "renewal_period",
+  "renewal_increment",
+  "renewal_rent",
+  "renewal_deposit",
+  "renewal_lease_start",
+  "renewal_lease_end",
+  "renewal_next_date",
+  "moveout_tab",
+  "moveout_draft"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "unique": 1
+  },
+  {
+   "default": "active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "archived\nstopped\nactive"
+  },
+  {
+   "fieldname": "inv_schedule",
+   "fieldtype": "Table",
+   "label": "Invoice Schedule",
+   "options": "inv schedule"
+  },
+  {
+   "fieldname": "latefee_policy",
+   "fieldtype": "Link",
+   "label": "Late Fee Policy",
+   "options": "late fee policy"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "building",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Building",
+   "options": "building",
+   "reqd": 1
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Unit",
+   "options": "unit",
+   "reqd": 1
+  },
+  {
+   "fieldname": "late_fee_schedule",
+   "fieldtype": "Table",
+   "label": "late fee schedule",
+   "options": "late fee schedule"
+  },
+  {
+   "description": "select the invoice schedule that triggers late fees",
+   "fieldname": "inv_trigger",
+   "fieldtype": "Link",
+   "label": "Late Fee Trigger",
+   "options": "inv schedule"
+  },
+  {
+   "default": "month",
+   "fieldname": "period",
+   "fieldtype": "Select",
+   "label": "Period",
+   "options": "day\nweek\nmonth\nyear",
+   "reqd": 1
+  },
+  {
+   "description": "placeholder for future child table",
+   "fieldname": "lease_history",
+   "fieldtype": "Data",
+   "label": "Lease history"
+  },
+  {
+   "fieldname": "current_lease_parameters_column",
+   "fieldtype": "Column Break",
+   "label": "Current Lease Parameters"
+  },
+  {
+   "default": "1",
+   "fieldname": "increment",
+   "fieldtype": "Int",
+   "label": "Increment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rent",
+   "fieldtype": "Currency",
+   "label": "Rent Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "deposit",
+   "fieldtype": "Currency",
+   "label": "Security Deposit",
+   "reqd": 1
+  },
+  {
+   "fieldname": "lease_start",
+   "fieldtype": "Date",
+   "label": "Lease Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "lease_end",
+   "fieldtype": "Date",
+   "label": "Lease End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "next_date",
+   "fieldtype": "Date",
+   "label": "Next invoice"
+  },
+  {
+   "fieldname": "section_break_idmy",
+   "fieldtype": "Section Break",
+   "label": "Automatic Invoice Generation Schedules"
+  },
+  {
+   "depends_on": "eval:doc.action_que == \"Renew\"",
+   "fieldname": "renewal_tab",
+   "fieldtype": "Tab Break",
+   "label": "renewal"
+  },
+  {
+   "fieldname": "renewal_details_section",
+   "fieldtype": "Section Break",
+   "label": "Renewal Details"
+  },
+  {
+   "default": "0",
+   "fieldname": "renewal_draft",
+   "fieldtype": "Check",
+   "label": "Draft"
+  },
+  {
+   "default": "month",
+   "fieldname": "renewal_period",
+   "fieldtype": "Select",
+   "label": "Period",
+   "options": "day\nweek\nmonth\nyear",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "renewal_increment",
+   "fieldtype": "Int",
+   "label": "Increment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "renewal_rent",
+   "fieldtype": "Currency",
+   "label": "Rent Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "renewal_deposit",
+   "fieldtype": "Currency",
+   "label": "Security Deposit",
+   "reqd": 1
+  },
+  {
+   "fieldname": "renewal_lease_start",
+   "fieldtype": "Date",
+   "label": "Lease Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "renewal_lease_end",
+   "fieldtype": "Date",
+   "label": "Lease End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "renewal_next_date",
+   "fieldtype": "Date",
+   "label": "Next invoice"
+  },
+  {
+   "fieldname": "action_que",
+   "fieldtype": "Data",
+   "label": "Action Queue"
+  },
+  {
+   "depends_on": "eval:doc.action_que == \"Moveout\"",
+   "fieldname": "moveout_tab",
+   "fieldtype": "Tab Break",
+   "label": "moveout"
+  },
+  {
+   "default": "0",
+   "fieldname": "moveout_draft",
+   "fieldtype": "Check",
+   "label": "Draft"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-02-20 18:19:41.405303",
+ "modified_by": "Administrator",
+ "module": "Propman",
+ "name": "lease",
+ "naming_rule": "Expression (old style)",
+ "nsm_parent_field": "parent_lease",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "title"
+}

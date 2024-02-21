@@ -1,0 +1,77 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-02-12 17:16:51.155233",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "run_date",
+  "num_invs",
+  "num_latefees",
+  "notices_sent",
+  "new_invs",
+  "new_latefees"
+ ],
+ "fields": [
+  {
+   "fieldname": "new_invs",
+   "fieldtype": "Table",
+   "label": "Invoices Created",
+   "options": "new_invs"
+  },
+  {
+   "fieldname": "run_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Run Date"
+  },
+  {
+   "fieldname": "num_invs",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Num Invoices"
+  },
+  {
+   "fieldname": "num_latefees",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Num Late Fees"
+  },
+  {
+   "fieldname": "notices_sent",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Notices Sent"
+  },
+  {
+   "fieldname": "new_latefees",
+   "fieldtype": "Table",
+   "label": "Late Fees Created",
+   "options": "new_latefees"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-02-14 06:50:30.109257",
+ "modified_by": "Administrator",
+ "module": "Propman",
+ "name": "daily process run",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

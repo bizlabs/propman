@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-02-13 09:50:36.198353",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "grace_per",
+  "repeat_per",
+  "pct",
+  "flat_fee",
+  "created_status",
+  "suspend",
+  "last_date",
+  "next_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title"
+  },
+  {
+   "fieldname": "grace_per",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Grace Period (days)",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "description": "0 for no repeat, 1 for daily, etc",
+   "fieldname": "repeat_per",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Repeat Every x Days"
+  },
+  {
+   "default": "0",
+   "fieldname": "pct",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "Percent of Amount Due",
+   "precision": "1",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "flat_fee",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Flat Fee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "created_status",
+   "fieldtype": "Select",
+   "label": "Status of created late fees",
+   "options": "draft\nsubmitted"
+  },
+  {
+   "default": "0",
+   "fieldname": "suspend",
+   "fieldtype": "Check",
+   "label": "Suspend"
+  },
+  {
+   "fieldname": "last_date",
+   "fieldtype": "Date",
+   "label": "Last Date"
+  },
+  {
+   "fieldname": "next_date",
+   "fieldtype": "Date",
+   "label": "Next iDate"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-02-17 21:46:25.219366",
+ "modified_by": "Administrator",
+ "module": "Propman",
+ "name": "late fee schedule",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,76 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-02-12 17:06:43.933123",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "rent_income_acct",
+  "late_fee_acct",
+  "sec_dep_acct",
+  "tenant_charge_acct",
+  "receivable_account"
+ ],
+ "fields": [
+  {
+   "fieldname": "late_fee_acct",
+   "fieldtype": "Link",
+   "label": "Late Fee Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "sec_dep_acct",
+   "fieldtype": "Link",
+   "label": "Tenant Security Deposit Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "tenant_charge_acct",
+   "fieldtype": "Link",
+   "label": "Tenant Charges Account (repairs, etc)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Property Management Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "receivable_account",
+   "fieldtype": "Link",
+   "label": "Invoice Receivables Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "rent_income_acct",
+   "fieldtype": "Link",
+   "label": "Default Rent Income Account",
+   "options": "Account"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-02-18 18:37:05.950007",
+ "modified_by": "Administrator",
+ "module": "Propman",
+ "name": "property manager settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
