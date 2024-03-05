@@ -1,0 +1,72 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-22 08:58:08.543574",
+  "name": "Inspect",
+  "workflow_action_name": "Inspect"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-27 20:25:47.493201",
+  "name": "Send renewal",
+  "workflow_action_name": "Send renewal"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-27 21:46:39.465029",
+  "name": "Archive",
+  "workflow_action_name": "Archive"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-27 21:50:58.110178",
+  "name": "Reset",
+  "workflow_action_name": "Reset"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-27 21:59:24.859322",
+  "name": "Start new lease",
+  "workflow_action_name": "Start new lease"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-22 14:59:28.006778",
+  "name": "Finish moveout",
+  "workflow_action_name": "Finish moveout"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-22 13:56:44.476116",
+  "name": "Moveout vacate",
+  "workflow_action_name": "Moveout vacate"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-22 13:47:24.624116",
+  "name": "Start Renew",
+  "workflow_action_name": "Start Renew"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-22 08:50:27.220947",
+  "name": "Receive renewal",
+  "workflow_action_name": "Receive renewal"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2024-02-22 13:47:33.987109",
+  "name": "Start moveout",
+  "workflow_action_name": "Start moveout"
+ }
+]

@@ -1,0 +1,92 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-27 19:30:33.600903",
+  "name": "Renewal needed",
+  "style": "",
+  "workflow_state_name": "Renewal needed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-27 22:00:54.440303",
+  "name": "Renewal in Que",
+  "style": "",
+  "workflow_state_name": "Renewal in Que"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-21 16:07:59.249064",
+  "name": "Archived",
+  "style": "",
+  "workflow_state_name": "Archived"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-22 14:44:01.263924",
+  "name": "Moveout complete",
+  "style": "",
+  "workflow_state_name": "Moveout complete"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-22 13:37:21.335993",
+  "name": "Moveout vacated",
+  "style": "",
+  "workflow_state_name": "Moveout vacated"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-21 16:08:35.950799",
+  "name": "Renewal received",
+  "style": "",
+  "workflow_state_name": "Renewal received"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-21 16:08:58.505065",
+  "name": "Moveout notice received",
+  "style": "",
+  "workflow_state_name": "Moveout notice received"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-21 16:08:19.223097",
+  "name": "Renewal sent",
+  "style": "",
+  "workflow_state_name": "Renewal sent"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-21 16:03:52.564806",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2024-02-21 16:04:09.619834",
+  "name": "Active",
+  "style": "",
+  "workflow_state_name": "Active"
+ }
+]

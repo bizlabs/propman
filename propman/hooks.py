@@ -130,6 +130,47 @@ app_license = "mit"
 # 	}
 # }
 
+fixtures = [
+    {"dt": "Workflow", "filters": [
+        ["name", "=", "Lease Lifecycle"]
+    ]},
+    {"dt": "Workflow State", "filters": [
+        ["workflow_state_name", "in", [
+            "Renewal in Que",
+            "Renewal needed",
+            "Moveout complete",
+            "Moveout vacated",
+            "Moveout notice received",
+            "Renewal received",
+            "Renewal sent",
+            "Archived",
+            "Active",
+            "Draft"
+        ]]
+    ]},
+    {"dt": "Workflow Transition", "filters": [
+        ["parent", "=", "Lease Lifecycle"]
+    ]},
+    {"dt": "Workflow Document State", "filters": [
+        ["parent", "=", "Lease Lifecycle"]
+    ]},
+    {"dt": "Workflow Action Master", "filters": [
+        ["workflow_action_name", "in", [
+            "Start new lease",
+            "Reset",
+            "Archive",
+            "Send renewal",
+            "Finish moveout",
+            "Moveout vacate",
+            "Start moveout",
+            "Start Renew",
+            "Inspect",
+            "Receive renewal"
+        ]]
+    ]}
+]
+
+
 # Scheduled Tasks
 # ---------------
 
