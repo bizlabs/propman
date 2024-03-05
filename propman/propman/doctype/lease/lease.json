@@ -10,9 +10,10 @@
   "customer",
   "building",
   "unit",
-  "status",
   "lease_history",
-  "action_que",
+  "workflow_status",
+  "inv_status",
+  "expired",
   "current_lease_parameters_column",
   "period",
   "increment",
@@ -21,11 +22,20 @@
   "lease_start",
   "lease_end",
   "next_date",
+  "last_date",
   "section_break_idmy",
+  "auto_rent",
   "inv_schedule",
   "latefee_policy",
-  "inv_trigger",
   "late_fee_schedule",
+  "charges_tab",
+  "deposit_ledger_section",
+  "deposit_balance",
+  "unpaid_deposit_balance",
+  "deposit_ledger",
+  "general_ledger_section",
+  "unpaid_balance",
+  "charge_ledger",
   "renewal_tab",
   "renewal_details_section",
   "renewal_draft",
@@ -37,7 +47,8 @@
   "renewal_lease_end",
   "renewal_next_date",
   "moveout_tab",
-  "moveout_draft"
+  "moveout_draft",
+  "amended_from"
  ],
  "fields": [
   {
@@ -47,19 +58,14 @@
    "unique": 1
   },
   {
-   "default": "active",
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "archived\nstopped\nactive"
-  },
-  {
+   "allow_on_submit": 1,
    "fieldname": "inv_schedule",
    "fieldtype": "Table",
    "label": "Invoice Schedule",
    "options": "inv schedule"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "latefee_policy",
    "fieldtype": "Link",
    "label": "Late Fee Policy",
@@ -88,17 +94,11 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "late_fee_schedule",
    "fieldtype": "Table",
    "label": "late fee schedule",
    "options": "late fee schedule"
-  },
-  {
-   "description": "select the invoice schedule that triggers late fees",
-   "fieldname": "inv_trigger",
-   "fieldtype": "Link",
-   "label": "Late Fee Trigger",
-   "options": "inv schedule"
   },
   {
    "default": "month",
@@ -109,10 +109,11 @@
    "reqd": 1
   },
   {
-   "description": "placeholder for future child table",
+   "description": "link to child w/ start, end date, renewal date, per, inc, rent, other charges, notes regarding renewal",
    "fieldname": "lease_history",
-   "fieldtype": "Data",
-   "label": "Lease history"
+   "fieldtype": "Table",
+   "label": "Lease history",
+   "options": "lease_history"
   },
   {
    "fieldname": "current_lease_parameters_column",
@@ -145,6 +146,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "lease_end",
    "fieldtype": "Date",
    "label": "Lease End Date",
@@ -161,7 +163,7 @@
    "label": "Automatic Invoice Generation Schedules"
   },
   {
-   "depends_on": "eval:doc.action_que == \"Renew\"",
+   "depends_on": "eval:doc.workflow_status.includes(\"Renewal\");",
    "fieldname": "renewal_tab",
    "fieldtype": "Tab Break",
    "label": "renewal"
@@ -182,39 +184,33 @@
    "fieldname": "renewal_period",
    "fieldtype": "Select",
    "label": "Period",
-   "options": "day\nweek\nmonth\nyear",
-   "reqd": 1
+   "options": "day\nweek\nmonth\nyear"
   },
   {
    "default": "1",
    "fieldname": "renewal_increment",
    "fieldtype": "Int",
-   "label": "Increment",
-   "reqd": 1
+   "label": "Increment"
   },
   {
    "fieldname": "renewal_rent",
    "fieldtype": "Currency",
-   "label": "Rent Amount",
-   "reqd": 1
+   "label": "Rent Amount"
   },
   {
    "fieldname": "renewal_deposit",
    "fieldtype": "Currency",
-   "label": "Security Deposit",
-   "reqd": 1
+   "label": "Security Deposit"
   },
   {
    "fieldname": "renewal_lease_start",
    "fieldtype": "Date",
-   "label": "Lease Start Date",
-   "reqd": 1
+   "label": "Lease Start Date"
   },
   {
    "fieldname": "renewal_lease_end",
    "fieldtype": "Date",
-   "label": "Lease End Date",
-   "reqd": 1
+   "label": "Lease End Date"
   },
   {
    "fieldname": "renewal_next_date",
@@ -222,12 +218,7 @@
    "label": "Next invoice"
   },
   {
-   "fieldname": "action_que",
-   "fieldtype": "Data",
-   "label": "Action Queue"
-  },
-  {
-   "depends_on": "eval:doc.action_que == \"Moveout\"",
+   "depends_on": "eval:doc.workflow_status.includes(\"Moveout\");",
    "fieldname": "moveout_tab",
    "fieldtype": "Tab Break",
    "label": "moveout"
@@ -237,11 +228,95 @@
    "fieldname": "moveout_draft",
    "fieldtype": "Check",
    "label": "Draft"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "lease",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "workflow_status",
+   "fieldtype": "Data",
+   "label": "Workflow status"
+  },
+  {
+   "fieldname": "last_date",
+   "fieldtype": "Date",
+   "label": "Last invoice",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "charges_tab",
+   "fieldtype": "Tab Break",
+   "label": "charges"
+  },
+  {
+   "fieldname": "deposit_ledger_section",
+   "fieldtype": "Section Break",
+   "label": "Deposit Ledger"
+  },
+  {
+   "fieldname": "deposit_balance",
+   "fieldtype": "Currency",
+   "label": "Deposit Balance"
+  },
+  {
+   "fieldname": "unpaid_deposit_balance",
+   "fieldtype": "Currency",
+   "label": "Unpaid Deposit Balance"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "deposit_ledger",
+   "fieldtype": "Table",
+   "label": "Deposit Transactions",
+   "options": "deposit ledger"
+  },
+  {
+   "fieldname": "general_ledger_section",
+   "fieldtype": "Section Break",
+   "label": "General Ledger"
+  },
+  {
+   "fieldname": "unpaid_balance",
+   "fieldtype": "Currency",
+   "label": "Unpaid Balance"
+  },
+  {
+   "fieldname": "charge_ledger",
+   "fieldtype": "Table",
+   "label": "Charges",
+   "options": "pm_charges"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_rent",
+   "fieldtype": "Check",
+   "label": "Auto Rent Invoicing"
+  },
+  {
+   "fieldname": "inv_status",
+   "fieldtype": "Select",
+   "label": "Rent Invoice Initial Status",
+   "options": "draft\nsubmitted"
+  },
+  {
+   "default": "0",
+   "fieldname": "expired",
+   "fieldtype": "Check",
+   "label": "Expired?"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-20 18:19:41.405303",
+ "modified": "2024-03-04 20:46:26.309819",
  "modified_by": "Administrator",
  "module": "Propman",
  "name": "lease",

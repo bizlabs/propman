@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "run_date",
+  "elapsed_time",
   "num_invs",
   "num_latefees",
   "notices_sent",
@@ -48,11 +49,16 @@
    "fieldtype": "Table",
    "label": "Late Fees Created",
    "options": "new_latefees"
+  },
+  {
+   "fieldname": "elapsed_time",
+   "fieldtype": "Data",
+   "label": "Elapsed Time"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-14 06:50:30.109257",
+ "modified": "2024-03-02 19:28:45.150209",
  "modified_by": "Administrator",
  "module": "Propman",
  "name": "daily process run",

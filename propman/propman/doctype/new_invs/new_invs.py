@@ -6,11 +6,10 @@ from frappe.model.document import Document
 
 
 class new_invs(Document):
-    
+
     @property
     def title(self):
         return frappe.get_value('Sales Invoice', self.invoice, 'title')
-
 
     @property
     def amount(self):

@@ -1,9 +1,11 @@
 # Copyright (c) 2024, Bizlabs and contributors
 # For license information, please see license.txt
 
+from frappe.utils import today, getdate
 from dateutil.relativedelta import *
 # import dateutil
 import datetime
+from datetime import date
 import frappe
 from frappe.model.document import Document
 
@@ -14,23 +16,73 @@ from frappe.model.document import Document
 # table latefee_schedule can be auto-populated with selected late fee policy
 
 
+def test_minute():
+	frappe.msgprint("test minute good")
+	print("test outside class")
+
 class lease(Document):
 
-	# def before_validate():
-	# 	if self.renewal_draft:
-	# 		status = 
-	# 	meta = get_meta("lease")
-	# 	meta.get_field("renewal_lease_start").reqd = status
-	# 	meta.get_field("renewal_lease_end").reqd = status
+	def on_update_after_submit(self):
+		# move these to the switch/case in validate xxx
+		if self.workflow_status == "Renewal received":
+			# cancel lease and amend to a new lease
+			frappe.msgprint ("from here, we'll create an amended lease")
+		if self.workflow_status == "Moveout complete":
+			# archive
+			frappe.msgprint("Moveout complete.  Archive me now")
 		
 	def validate(self):
-		# perhaps use a switch/case type statement.  Add all reqrd fields
-		if not self.renewal_draft:
-			if not self.renewal_lease_start:
-				frappe.throw("renewal lease start is required renewal is not draft")
-			if not self.renewal_lease_end:
-				frappe.throw("renewal lease end is required renewal is not draft")
+		# process new or updated one-time inv/credit schedules when entered.
+		# create invoice if it's time, else record future date for processing
+		# in daily process run
+		invs = []
+		settings = frappe.get_doc('property manager settings')
+		for x in self.inv_schedule:
+			if x.period == "one-time":
+				if x.isnew or x.isupdate:
+					process_now = True
+					if x.next_date != None:
+						delay = getdate(x.next_date) - date.today()
+						if delay.days > 0:
+							process_now = False
+					else:
+						x.next_date = date.today()
+					if process_now:
+						invs.append(self.create_invoice(x.next_date, x,settings))
+					else:
+						frappe.msgprint("new item will be processed in  " + str(delay.days) + " day(s)")
+						x.isnew = x.isupdate = False
+			else:
+				x.isnew = x.isupdate = False
+		newlist = [x for x in self.inv_schedule if not (x.isnew or x.isupdate)]
+		self.inv_schedule = newlist
+		num_invs = len(invs)
+		if num_invs > 0:
+			frappe.msgprint(str(num_invs) + " invoice/credit(s) have been created")
 
+	#do something according to workflow status.  move to js where I can just do it on transistion
+	# to new workflow state instead of every validation
+		match self.workflow_status:
+			case "Draft":
+				pass
+			case "Active":
+				pass
+			case "Renewal Needed":
+				pass
+			case "Renewal sent":
+				pass
+			case "Renewal received":
+				pass
+			case "Moveout notice received":
+				pass
+			case "Moveout vacated":
+				pass
+			case "Moveout complete":
+				pass
+			case "Archived":
+				pass
+			case _:
+				pass
 
 	@frappe.whitelist()
 	def Moveout(self,arg1):
@@ -48,39 +100,51 @@ class lease(Document):
 
 	def get_new_scheduled_invoices(self,run_date):
 		new_invoices = []
+		settings = frappe.get_doc('property manager settings')
 		for schedule in self.inv_schedule:
-			#xxx change if to loop to catch up on possible missed days.
-			if run_date >= schedule.next_date: #xxx use schedule.pre_inv_days to invoice b4 due date
+			while run_date >= schedule.next_date - datetime.timedelta(days=settings.pre_inv):
 						# items = {'amount':schedule.amount,'desc':schedule.desc,'account':schedule.account,
 						# 	'date':schedule.next_date,'docstatus':schedule.docstatus}
-				new_invoices.append (self.create_invoice(run_date,schedule))
+				new_invoices.append (self.create_invoice(run_date,schedule,settings))
 				#calc next date from schedule
-				schedule.next_date = self.get_next_date(run_date,schedule)
-				schedule.last_date = run_date
-				self.save() 				
-				
+				if schedule.period == "one-time":
+					schedule.amount = 0.00  # mark for later deletion
+				if schedule.desc == "Rent":
+					self.next_date = schedule.next_date = self.get_next_date(run_date,schedule)
+					self.last_date = run_date
+				else:
+					schedule.next_date = self.get_next_date(run_date,schedule)
+					schedule.last_date = run_date
+		# one-time items were set to amount = 0 above so they can be removed here...
+		newlist = [x for x in self.inv_schedule if x.amount > 0.00]
+		self.inv_schedule = newlist
+		self.save() 				
 		return new_invoices
 	
-	def create_invoice(self,run_date,items):
-		settings = frappe.get_doc('property manager settings')
+	def create_invoice(self,posting_date,items,settings):
+		# settings = frappe.get_doc('property manager settings')
 		# items = {'amount':schedule.amount,'desc':schedule.desc,'account':schedule.account,
 		# 	 		'date':schedule.next_date,'docstatus':schedule.docstatus}
+		
 		inv = frappe.get_doc({
 			'doctype':	  		'Sales Invoice',
+			'is_return':		1 if items.type == "credit" else 0,
 			'customer':			self.customer,
 			'company':	  		settings.company,
-			'posting_date':		min(run_date,items.next_date), # earliest of run_date and due_date
+			'posting_date':		min(getdate(posting_date),getdate(items.next_date)), # earliest of posting_date and due_date
 			'due_date':			items.next_date,
-			'docstatus': 		0 if items.docstatus == 'draft' else 1,
+			'docstatus': 		0 if items.inv_status == 'draft' else 1,
 			'debit_to': 		settings.receivable_account,
 			'building':			self.building,
+			'lease':			self.name,
 			'items':[{
 				# 'item':    item,
 				'item_name':	items.desc,
-				'qty':     		1,
+				'qty':     		-1 if items.type == "credit" else 1,
 				'rate':    		items.amount,
 				'income_account': items.account,
 				'building':		self.building,
+				'lease':		self.name,
 			}]
 		})
 
@@ -91,7 +155,6 @@ class lease(Document):
 	def get_next_date(self,run_date,schedule): #given schedule.period, schedule.increment
 		inc = schedule.increment
 		if schedule.period == 'day':
-			# next_date = next_date + increment
 			next_date = schedule.next_date + datetime.timedelta(days=inc)
 		elif schedule.period == 'week':
 			next_date = schedule.next_date + datetime.timedelta(weeks = inc)
@@ -104,11 +167,11 @@ class lease(Document):
 		
 		return next_date
 
-	def get_new_scheduled_latefees(self,run_date, open_invoices, latefee_schedules):
+	def get_new_scheduled_latefees(self,proc_run, open_invoices, latefee_schedules):
 # xxx This hasn't been tested yet
-		
+		run_date = proc_run.run_date
 		settings = frappe.get_doc('property manager settings')
-		new_latefees = []
+		proc_run.new_latefees = []
 			# filter only those latefee_schedules belonging to this lease
 		myscheds = [i for i in latefee_schedules if i.parent == self.name]
 		my_open_invoices = [i for i in open_invoices if i.lease == self]
@@ -129,8 +192,15 @@ class lease(Document):
 					continue
 
 				items = {'amount':fee,'desc':"Late Fee",'account':settings.late_fee_acct,
-			 		'date':schedule.next_date,'docstatus':schedule.latefee_status}
-				new_latefees.append (self.create_invoice(run_date,items))
+			 		'date':schedule.next_date,'docstatus':schedule.created_status}
+				latefee = self.create_invoice(run_date,items,settings)
+
+				latefee_link = frappe.get_doc({
+					'doctype': 'new_latefees',
+					'run_date': proc_run.run_date,
+					'latefee': latefee,
+				})
+				proc_run.append("new_latefees", latefee_link)
 				
 				if schedule.repeat_per == 0:
 					schedule.next_date = self.next_date + schedule.grace_per
@@ -138,4 +208,5 @@ class lease(Document):
 					schedule.next_date = run_date + schedule.repeat_per
 
 				schedule.last_date = run_date
-				self.save() 				
+				self.save() 
+		return proc_run				

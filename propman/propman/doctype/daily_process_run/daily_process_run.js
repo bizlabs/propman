@@ -13,15 +13,7 @@ frappe.ui.form.on("daily process run", {
                     }
                 });
                 
-
-                // frappe.call('propman.propman.doctype.daily_process_run.daily_process_run.daily_run')
-                // .then(r => {
-                //     console.log(r)
-                //     // {message: "pong"}
-                // })
-              
-
-        }, __("Test"));
+            }, __("Test"));
 
 	},
 });

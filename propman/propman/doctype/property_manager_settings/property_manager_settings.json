@@ -6,11 +6,14 @@
  "engine": "InnoDB",
  "field_order": [
   "company",
+  "pre_inv",
   "rent_income_acct",
   "late_fee_acct",
   "sec_dep_acct",
+  "receivable_account",
   "tenant_charge_acct",
-  "receivable_account"
+  "default_status",
+  "default_account"
  ],
  "fields": [
   {
@@ -48,12 +51,31 @@
    "fieldtype": "Link",
    "label": "Default Rent Income Account",
    "options": "Account"
+  },
+  {
+   "description": "Only for current leases.  Expired leases always produce Draft invoices",
+   "fieldname": "default_status",
+   "fieldtype": "Select",
+   "label": "default new invoice status",
+   "options": "draft\nsubmitted"
+  },
+  {
+   "fieldname": "default_account",
+   "fieldtype": "Table",
+   "label": "Custom Default Accounts",
+   "options": "settings_account_type"
+  },
+  {
+   "description": "Number of days before due date to create invoices",
+   "fieldname": "pre_inv",
+   "fieldtype": "Int",
+   "label": "Pre Invoice (days)"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-18 18:37:05.950007",
+ "modified": "2024-03-03 08:59:27.382085",
  "modified_by": "Administrator",
  "module": "Propman",
  "name": "property manager settings",

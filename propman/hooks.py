@@ -133,23 +133,28 @@ app_license = "mit"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"propman.tasks.all"
-# 	],
-# 	"daily": [
-# 		"propman.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"propman.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"propman.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"propman.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	# "all": [
+    #     "propman.propman.doctype.daily_process_run.daily_process_run.manual_run"
+	# ],
+	# "daily": [
+	# 	"propman.tasks.daily"
+	# ],
+    "cron": {
+        "0 1 * * *": [
+            "propman.tasks.daily" # @ 1am
+        ],
+    },
+	# "hourly": [
+	# 	"propman.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"propman.tasks.weekly"
+	# ],
+	# "monthly": [
+	# 	"propman.tasks.monthly"
+	# ],
+}
 
 # Testing
 # -------
