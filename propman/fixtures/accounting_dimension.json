@@ -1,0 +1,50 @@
+[
+ {
+  "dimension_defaults": [
+   {
+    "automatically_post_balancing_accounting_entry": 0,
+    "company": "Mattingly Properties",
+    "default_dimension": null,
+    "mandatory_for_bs": 1,
+    "mandatory_for_pl": 1,
+    "offsetting_account": null,
+    "parent": "building",
+    "parentfield": "dimension_defaults",
+    "parenttype": "Accounting Dimension",
+    "reference_document": "building"
+   }
+  ],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Accounting Dimension",
+  "document_type": "building",
+  "fieldname": "building",
+  "label": "building",
+  "modified": "2024-02-23 02:06:22.415577",
+  "name": "building"
+ },
+ {
+  "dimension_defaults": [
+   {
+    "automatically_post_balancing_accounting_entry": 0,
+    "company": "Mattingly Properties",
+    "default_dimension": null,
+    "mandatory_for_bs": 1,
+    "mandatory_for_pl": 1,
+    "offsetting_account": null,
+    "parent": "lease",
+    "parentfield": "dimension_defaults",
+    "parenttype": "Accounting Dimension",
+    "reference_document": "lease"
+   }
+  ],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Accounting Dimension",
+  "document_type": "lease",
+  "fieldname": "lease",
+  "label": "lease",
+  "modified": "2024-02-23 02:05:50.495305",
+  "name": "lease"
+ }
+]

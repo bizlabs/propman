@@ -169,7 +169,7 @@ fixtures = [
         ]]
     ]},
     {"dt": "Accounting Dimension", "filters": [
-        ["dimension_name", "in", ["lease", "building"]]
+        ["label", "in", ["lease", "building"]]
     ]}
 ]
 
