@@ -167,6 +167,9 @@ fixtures = [
             "Inspect",
             "Receive renewal"
         ]]
+    ]},
+    {"dt": "Accounting Dimension", "filters": [
+        ["dimension_name", "in", ["lease", "building"]]
     ]}
 ]
 

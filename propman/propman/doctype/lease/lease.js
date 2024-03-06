@@ -80,7 +80,7 @@ frappe.ui.form.on("lease", {
 				frm.doc.auto_rent = true
 				frm.doc.inv_status = "submitted"
                 frappe.msgprint("Here are draft invoice (if any) that you may want to submit now.  Press back button in browswer to return to the lease")
-                frappe.set_route("List", "Sales Invoice",{'lease':frm.doc.name, 'status':"Draft"});
+                // frappe.set_route("List", "Sales Invoice",{'lease':frm.doc.name, 'status':"Draft"});
                 break;
             case "renew":
                 break;
