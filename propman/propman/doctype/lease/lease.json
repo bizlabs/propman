@@ -45,7 +45,7 @@
   "renewal_deposit",
   "renewal_lease_start",
   "renewal_lease_end",
-  "renewal_next_date",
+  "renewal_penalty",
   "moveout_tab",
   "moveout_draft",
   "amended_from"
@@ -198,24 +198,20 @@
    "label": "Rent Amount"
   },
   {
+   "description": "Leave $0.00 if security deposit isn't changing",
    "fieldname": "renewal_deposit",
    "fieldtype": "Currency",
-   "label": "Security Deposit"
+   "label": "ADDITIONAL Security Deposit"
   },
   {
    "fieldname": "renewal_lease_start",
    "fieldtype": "Date",
-   "label": "Lease Start Date"
+   "label": "Renewal Start Date"
   },
   {
    "fieldname": "renewal_lease_end",
    "fieldtype": "Date",
-   "label": "Lease End Date"
-  },
-  {
-   "fieldname": "renewal_next_date",
-   "fieldtype": "Date",
-   "label": "Next invoice"
+   "label": "Renewal End Date"
   },
   {
    "depends_on": "eval:doc.workflow_status.includes(\"Moveout\");",
@@ -312,11 +308,17 @@
    "fieldname": "expired",
    "fieldtype": "Check",
    "label": "Expired?"
+  },
+  {
+   "description": "For future implementation",
+   "fieldname": "renewal_penalty",
+   "fieldtype": "Currency",
+   "label": "Non-Renewal Penalty Charge"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-03-04 20:46:26.309819",
+ "modified": "2024-03-18 18:50:33.358494",
  "modified_by": "Administrator",
  "module": "Propman",
  "name": "lease",

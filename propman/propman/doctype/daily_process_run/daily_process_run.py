@@ -41,7 +41,12 @@ class dailyprocessrun(Document):
 			if self.run_date > lease.lease_end:
 				lease.inv_status = "draft"
 				lease.expired = True
-				
+
+			if lease.workflow_status == "Renewal received":
+				if self.run_date > lease.renewal_lease_start:
+					lease.do_renewal()
+					frappe.msgprint("running do_renewal from daily process run") # xxx delete after debugging	
+
 			invoices = lease.get_new_scheduled_invoices(self.run_date)  #list of new invoices
 
 			for invoice in invoices:

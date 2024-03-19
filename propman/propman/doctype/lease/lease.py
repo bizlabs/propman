@@ -22,6 +22,52 @@ def test_minute():
 
 class lease(Document):
 
+	@frappe.whitelist()
+	def do_renewal(self):
+		frappe.msgprint("starting function do_renewal") # xxx delete after debug
+		# rotate lease details to history and renewal to lease
+		# this is called from daily_run on lease renewal date (or directly from lease_received workflow if its time)
+		self.workflow_status = "Active"
+		# xxx remove non-renewal penalty inv_schedule
+		newlist = [x for x in self.inv_schedule if x.penalty != True]
+		self.inv_schedule = newlist
+
+		other_description = ""
+		other_charges = 0
+		for si in self.inv_schedule:
+			if si.desc != "Rent":
+				other_description += si.desc + " $" + str(si.amount) + "\n"
+				other_charges += si.amount
+									  
+		lease_history = {
+			'start_date': self.lease_start,
+			'end_date': self.lease_end,
+			'renewal_date': date.today(),
+			'period': self.period,
+			'increment': self.increment,
+			'rent': self.rent,
+			'other_description': other_description,
+			'other_charges': other_charges, 
+			#'notes': "add notes here if desired" # perhaps start a note here that user can edit?
+		}
+		self.append('lease_history',lease_history)
+
+		self.lease_start = self.renewal_lease_start
+		self.lease_end = self.renewal_lease_end
+		self.period = self.renewal_period
+		self.increment = self.renewal_increment
+		self.rent = self.renewal_rent
+		#xxx convert draft addit. deposit invoice to confirmed (docstatus 1)
+		self.reset_renewal_fields()
+		self.save()
+
+	def reset_renewal_fields(self):
+		self.renewal_lease_start = self.renewal_lease_end = None
+		self.renewal_period = self.renewal_increment = None
+		self.renewal_rent = self.renewal_deposit = None
+		self.renewal_penalty = None
+
+
 	def on_update_after_submit(self):
 		# move these to the switch/case in validate xxx
 		if self.workflow_status == "Renewal received":
@@ -33,6 +79,7 @@ class lease(Document):
 		
 	def validate(self):
 		# process new or updated one-time inv/credit schedules when entered.
+		#	eg, enter invoice charge for a repair
 		# create invoice if it's time, else record future date for processing
 		# in daily process run
 		invs = []
@@ -64,7 +111,12 @@ class lease(Document):
 	# to new workflow state instead of every validation
 		match self.workflow_status:
 			case "Draft":
-				pass
+				# xxx update or create deposit invoice
+				if self.deposit_invoice:
+					self.update_deposit_invoice(self.deposit, self.deposit_inv)
+				else:
+					self.create_deposit_invoice(self.deposit, settings)
+				
 			case "Active":
 				pass
 			case "Renewal Needed":
@@ -84,13 +136,30 @@ class lease(Document):
 			case _:
 				pass
 
+	def create_deposit_invoice(self, amount, settings):
+		items = {
+			'xxx':	'xxx'
+		}
+		posting_date = 'xxx'
+		self.create_invoice(posting_date, items, settings)
+		pass #xxx
+
+	def update_deposit_invoice(amount, inv_name):
+		inv = frappe.get_doc('Sales Invoice',inv_name)
+		inv.items[0].rate = amount
+		#xxx inv.save()
+		pass #xxx
+	
 	@frappe.whitelist()
 	def Moveout(self,arg1):
 		frappe.msgprint("action = Moveout")
 
 	@frappe.whitelist()
-	def Renew(self,arg1):
-		# set new lease details in a queue
+	def do_renew(self,arg1): #xxx delete me
+		# rotate lease details to history and renewal to lease
+		# this is called from daily_run on lease renewal date (or directly from lease_received workflow if its time)
+		# include non-renewal penalty to add to invoice
+
 		# on new lease date, create a new lease history child table record from existing lease details
 		# and copy lease queue into the current lease details
 		# if new lease date is already passed, process this queue immediately
@@ -115,11 +184,30 @@ class lease(Document):
 				else:
 					schedule.next_date = self.get_next_date(run_date,schedule)
 					schedule.last_date = run_date
+		
 		# one-time items were set to amount = 0 above so they can be removed here...
 		newlist = [x for x in self.inv_schedule if x.amount > 0.00]
 		self.inv_schedule = newlist
+
 		self.save() 				
 		return new_invoices
+	
+	@frappe.whitelist()
+	def set_penalty_schedule(self):
+		settings = frappe.get_doc('property manager settings')
+		items = {
+			'next_date':	self.renewal_lease_start,
+			'period':		self.renewal_period,
+			'increment':	self.renewal_increment,
+			'desc':			"additional rent for non-renewed lease", #DON'T CHANGE DESCRIPTION.  it triggers delete when lease renewed
+			'penalty':		True,
+			'account':		settings.rent_income_acct,
+			'type':			"Other",
+			'amount': 		self.renewal_penalty,
+			'inv_status':	"draft"
+		}
+		self.append('inv_schedule',items)
+		self.save()
 	
 	def create_invoice(self,posting_date,items,settings):
 		# settings = frappe.get_doc('property manager settings')

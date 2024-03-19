@@ -79,10 +79,43 @@ frappe.ui.form.on("lease", {
             case "Active":
 				frm.doc.auto_rent = true
 				frm.doc.inv_status = "submitted"
+                    //xxx perhaps only got ot draft invoices it there are some
                 frappe.msgprint("Here are draft invoice (if any) that you may want to submit now.  Press back button in browswer to return to the lease")
-                // frappe.set_route("List", "Sales Invoice",{'lease':frm.doc.name, 'status':"Draft"});
+                frappe.set_route("List", "Sales Invoice",{'lease':frm.doc.name, 'status':"Draft"});
                 break;
-            case "renew":
+            case "Renewal needed":
+                frappe.msgprint("select the 'renewal' tab to enter renewal data")
+                // xxx is there a way to go to the renewal tab?
+                // frappe.set_route("Form",'lease', self.name, tab?
+                break;
+            case "Renewal sent":
+                // xxx add renewal penalty schedule item
+                frm.call('set_penalty_schedule', { arg1: "value" })
+                .then(r => {
+                    if (r.message) {
+                        // do something with r.message
+                    }
+                })
+                break;
+            case "Renewal received":
+                // xxx remove the non-renewal penalty inv_schedule
+                // if past renewal date, run do_renewal (frappe.call), else let that happen in daily process run
+                const today = new Date().getTime();
+                const renew = new Date(frm.doc.renewal_lease_start).getTime();
+                const delta = Math.round( (today - renew)/(1000*3600*24) );
+                if (delta > 0) {
+                    frappe.msgprint("I am running the renewal script since it is due");
+                    frm.call('do_renewal', { arg1: "value" })
+                    .then(r => {
+                        if (r.message) {
+                            // do something with r.message
+                        }
+                    })
+                }
+                else {
+                    //let it happen later in daily run
+                    frappe.msgprint("I'll que it up to execute on renewal date");
+                }
                 break;
             case "Moveout complete":
                 frm.doc.inv_status = 'draft';

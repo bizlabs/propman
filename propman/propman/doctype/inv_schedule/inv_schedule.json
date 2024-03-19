@@ -16,7 +16,8 @@
   "account",
   "inv_status",
   "isnew",
-  "isupdate"
+  "isupdate",
+  "penalty"
  ],
  "fields": [
   {
@@ -97,12 +98,19 @@
    "fieldtype": "Check",
    "is_virtual": 1,
    "label": "isUpdate"
+  },
+  {
+   "default": "False",
+   "fieldname": "penalty",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Penalty"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-02-29 13:33:29.946286",
+ "modified": "2024-03-18 18:35:18.043283",
  "modified_by": "Administrator",
  "module": "Propman",
  "name": "inv schedule",

@@ -34,7 +34,7 @@
   },
   {
    "fieldname": "period",
-   "fieldtype": "Date",
+   "fieldtype": "Data",
    "label": "Period"
   },
   {
@@ -50,7 +50,7 @@
   },
   {
    "fieldname": "other_description",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "label": "Other Charges Description"
   },
   {
@@ -68,7 +68,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-03-04 20:45:29.766147",
+ "modified": "2024-03-17 16:55:13.915919",
  "modified_by": "Administrator",
  "module": "Propman",
  "name": "lease_history",
